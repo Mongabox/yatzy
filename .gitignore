@@ -1,0 +1,48 @@
+# Build output
+**/bin/
+**/obj/
+**/dist/
+**/wwwroot/
+
+# Tests
+Yatzy.Tests/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Node
+**/node_modules/
+**/.vite/
+**/*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+_ReSharper*/
+*.DotSettings.user
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Local environment
+.env
+.env.*
+!.env.example

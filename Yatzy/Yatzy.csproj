@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- WinExe: нет консоли. net9.0-windows: нужно для WinForms + WebView2 -->
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWpf>true</UseWpf>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Yatzy</RootNamespace>
+    <AssemblyName>Yatzy</AssemblyName>
+    <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
+    <Description>Яцы (Yahtzee) — игра на C# с MVC архитектурой и React WebView2 UI</Description>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <!-- Suppress WindowsBase version conflict from WebView2 WPF bindings -->
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4022.49" />
+  </ItemGroup>
+
+  <!--
+    Перед каждой сборкой C#:
+    1. Собирает React-приложение (npm run build в папке ui/)
+    2. Копирует dist/ → wwwroot/ рядом с exe
+  -->
+  <Target Name="BuildAndCopyUi" BeforeTargets="Build">
+    <Message Text="[Yatzy] Building React UI..." Importance="high" />
+    <Exec Command="npm run build"
+          WorkingDirectory="$(MSBuildProjectDirectory)\..\ui"
+          ConsoleToMSBuild="false" />
+    <Message Text="[Yatzy] Copying dist/ → wwwroot/" Importance="high" />
+    <ItemGroup>
+      <UiDist Include="$(MSBuildProjectDirectory)\..\ui\dist\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(UiDist)"
+          DestinationFolder="$(OutDir)wwwroot\%(RecursiveDir)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
